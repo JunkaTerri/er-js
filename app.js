@@ -643,8 +643,23 @@ input.addEventListener("keydown", e => {
 	const parts = tokenize(line);
 	if (parts[0] === "focus") {
 
+		// Relative focus
+		if (parts[1] === "rel") {
+			const flags = parts[2];
+			const values = parts.slice(3);
+
+			let idx = 0;
+			for (let c of flags) {
+				if (c === "x") camera.cx += Number(values[idx++]);
+				if (c === "y") camera.cy += Number(values[idx++]);
+			}
+
+			redraw();
+			return;
+		}
+
 		// Absolute focus
-		if (parts[1] === "xy") {
+		if (parts[1] === "xy" || parts[1] === "x" || parts[1] === "y") {
 			let vi = 0;
 			const flags = parts[1];
 			const values = parts.slice(2);
@@ -664,20 +679,6 @@ input.addEventListener("keydown", e => {
 			return;
 		}
 
-		// Relative focus
-		if (parts[1] === "rel") {
-			const flags = parts[2];
-			const values = parts.slice(3);
-
-			let idx = 0;
-			for (let c of flags) {
-				if (c === "x") camera.cx += Number(values[idx++]);
-				if (c === "y") camera.cy += Number(values[idx++]);
-			}
-
-			redraw();
-			return;
-		}
 	}
 
 
@@ -845,3 +846,4 @@ function resizeCanvas() {
 
 window.addEventListener("resize", resizeCanvas);
 resizeCanvas();
+
