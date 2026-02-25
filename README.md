@@ -39,10 +39,6 @@ objects[]   // Entities, Attributes, Relationships
 lines[]     // Connections between objects
 ````
 
-Undo/redo snapshots store deep copies of these two arrays only.
-
-Camera (zoom/focus) is NOT part of undo history.
-
 ---
 
 # Command System
@@ -130,15 +126,6 @@ Source and target cannot be modified.
 
 ```
 del line <index>
-```
-
----
-
-## Undo / Redo
-
-```
-undo
-redo
 ```
 
 ---
@@ -309,7 +296,6 @@ Paste into app.diagrams.net.
 * Deterministic output
 * No hidden state
 * Stateless XML generation
-* Prototype-safe undo/redo
 * No framework dependencies
 
 ---
