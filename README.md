@@ -141,10 +141,6 @@ undo
 redo
 ```
 
-* Only structural changes are stored.
-* Camera changes are not stored.
-* Redo stack clears after new mutation.
-
 ---
 
 ## Copy XML
@@ -268,16 +264,6 @@ new Line 0 1 efxy 0.5 1 0.5 0
 
 ---
 
-# Grid
-
-* Minor grid every 50 units
-* Major grid every 200 units
-* Coordinates displayed along edges only
-* Fully camera-aware
-* No snapping
-
----
-
 # Tab Completion
 
 Supports:
@@ -314,27 +300,7 @@ Then:
 copy
 ```
 
-Paste into draw.io XML import.
-
----
-
-# Deployment
-
-This is a static project.
-
-To deploy via GitHub Pages:
-
-1. Push repo
-2. Settings → Pages
-3. Select `main` branch
-4. Root folder
-5. Save
-
-Access via:
-
-```
-https://<username>.github.io/<repo>/
-```
+Paste into app.diagrams.net.
 
 ---
 
