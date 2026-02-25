@@ -1,6 +1,3 @@
-const undoStack = [];
-const redoStack = [];
-
 const lines = [];
 const history = [];
 let historyIndex = -1;
@@ -29,16 +26,6 @@ const input = document.getElementById("cmd");
 const log = document.getElementById("log");
 
 const objects = [];
-
-function saveState() {
-	undoStack.push({
-		objects: structuredClone(objects),
-		lines: structuredClone(lines)
-	});
-
-	// New mutation invalidates redo history
-	redoStack.length = 0;
-}
 
 function logMsg(msg) {
 	log.innerHTML += msg + "<br/>";
@@ -654,48 +641,6 @@ input.addEventListener("keydown", e => {
 	logMsg("> " + line);
 
 	const parts = tokenize(line);
-
-	if (parts[0] === "undo") {
-		if (undoStack.length === 0) return;
-
-		redoStack.push({
-			objects: structuredClone(objects),
-			lines: structuredClone(lines)
-		});
-
-		const prev = undoStack.pop();
-
-		objects.length = 0;
-		lines.length = 0;
-
-		objects.push(...prev.objects);
-		lines.push(...prev.lines);
-
-		redraw();
-		return;
-	}
-
-	if (parts[0] === "redo") {
-		if (redoStack.length === 0) return;
-
-		undoStack.push({
-			objects: structuredClone(objects),
-			lines: structuredClone(lines)
-		});
-
-		const next = redoStack.pop();
-
-		objects.length = 0;
-		lines.length = 0;
-
-		objects.push(...next.objects);
-		lines.push(...next.lines);
-
-		redraw();
-		return;
-	}
-
-
 	if (parts[0] === "focus") {
 
 		// Absolute focus
@@ -768,7 +713,6 @@ input.addEventListener("keydown", e => {
 		const flags = parts[4] || "";
 		const values = parts.slice(5);
 
-		saveState();
 		const line = new Line(source, target);
 
 		parseLineFlags(line, flags, values);
@@ -789,7 +733,6 @@ input.addEventListener("keydown", e => {
 		const flags = parts[2] || "";
 		const values = parts.slice(3);
 
-		saveState();
 		parseLineFlags(lines[index], flags, values);
 		redraw();
 		return;
@@ -802,7 +745,6 @@ input.addEventListener("keydown", e => {
 			logMsg("Invalid line index");
 			return;
 		}
-		saveState();
 
 		lines.splice(index, 1);
 		redraw();
@@ -818,7 +760,6 @@ input.addEventListener("keydown", e => {
 			logMsg("Invalid object index");
 			return;
 		}
-		saveState();
 
 		// Remove lines referencing this object
 		for (let j = lines.length - 1; j >= 0; j--) {
@@ -852,7 +793,6 @@ input.addEventListener("keydown", e => {
 		return;
 		}
 
-		saveState();
 		const obj = new Cls();
 
 
@@ -879,7 +819,6 @@ input.addEventListener("keydown", e => {
 			if (c === "y") dy = Number(values[vi++]);
 		}
 
-		saveState();
 		objects[a].x = objects[b].x + dx;
 		objects[a].y = objects[b].y + dy;
 
@@ -893,7 +832,6 @@ input.addEventListener("keydown", e => {
 	const flags = parts[1] || "";
 	const values = parts.slice(2);
 	
-	saveState();
 	parseFlags(objects[index], flags, values);
 	redraw();
 });
@@ -907,5 +845,3 @@ function resizeCanvas() {
 
 window.addEventListener("resize", resizeCanvas);
 resizeCanvas();
-
-
