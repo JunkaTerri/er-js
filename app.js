@@ -206,6 +206,7 @@ function drawLine(line) {
 }
 
 function drawGrid() {
+	ctx.save();
 	const minor = 50;
 	const major = 200;
 
@@ -274,7 +275,7 @@ function drawGrid() {
 	for (let y = startY; y <= endY; y += major) {
 		ctx.fillText(`${y}`, left + 2, y);
 	}
-
+	ctx.restore();
 }
 
 
